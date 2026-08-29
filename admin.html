@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin | Yudhy Home Printing</title>
+<style>
+:root{--navy:#071a35;--blue:#0878d1;--pink:#ec1670;--yellow:#ffc400;--bg:#f5f7fb;--text:#17243a}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(120deg,#06172f,#083c78);color:#fff;padding:24px 18px}header h1{margin:0;font-size:1.55rem}header p{margin:6px 0 0;color:#dbeaff}
+.wrap{max-width:1000px;margin:auto;padding:20px}.box{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 8px 25px #112c4c0d}
+label{display:block;font-weight:800;margin:0 0 7px}.note{font-size:.9rem;color:#65758b;line-height:1.55}.token{display:flex;gap:10px}.token input{flex:1}
+input[type=text],input[type=password],input[type=file]{width:100%;padding:12px;border:1px solid #ccd6e3;border-radius:9px;background:#fff}button{border:0;border-radius:9px;padding:12px 16px;font-weight:900;cursor:pointer;background:var(--navy);color:#fff}button:hover{opacity:.9}.danger{background:#b42318}.status{margin-top:12px;padding:11px;border-radius:9px;background:#eef5ff;color:#174b80;display:none}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.card{border:1px solid #e1e7ef;border-radius:14px;padding:16px;background:#fff}.card h3{margin:0 0 5px}.card code{font-size:.78rem;color:#66758a;word-break:break-all}.preview{width:100%;height:190px;object-fit:cover;border-radius:10px;background:#eef2f7;margin:12px 0}.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.actions button{background:var(--blue)}.small{font-size:.8rem;color:#6a788c}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.token{flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>🛠️ Admin — Yudhy Home Printing</h1><p>Update foto website langsung dari GitHub</p></div></header>
+<main class="wrap">
+<section class="box">
+<h2>1. Hubungkan GitHub</h2>
+<p class="note">Halaman ini menggunakan GitHub API. Masukkan Personal Access Token GitHub Anda saat akan mengubah foto. Token hanya dipakai di browser ini dan tidak ditulis ke file website. Jangan membagikan token kepada orang lain.</p>
+<label for="token">GitHub Personal Access Token</label>
+<div class="token"><input id="token" type="password" placeholder="github_pat_..." autocomplete="off"><button onclick="testToken()">Tes Koneksi</button></div>
+<div id="status" class="status"></div>
+<p class="small">Token sebaiknya memiliki akses <b>Contents: Read and write</b> hanya untuk repository <b>yudhyhomeprinting/yudhy-home-printing-web</b>.</p>
+</section>
+
+<section class="box">
+<h2>2. Pilih foto yang ingin diganti</h2>
+<p class="note">Pilih file JPG/PNG/WebP. Setelah klik Upload, file lama pada lokasi tersebut akan diganti dan website akan mengikuti perubahan setelah GitHub Pages selesai memperbarui.</p>
+<div class="grid" id="cards"></div>
+</section>
+
+<section class="box">
+<h2>Catatan penting</h2>
+<p class="note">Ini adalah halaman admin sederhana untuk GitHub Pages, bukan sistem login profesional. Jangan memasukkan token ke kode atau commit ke repository. Untuk toko yang lebih besar, nanti kita bisa pindahkan pengelolaan produk ke database/storage seperti Supabase agar update foto tidak perlu menyentuh GitHub.</p>
+</section>
+</main>
+<script>
+const OWNER='yudhyhomeprinting';
+const REPO='yudhy-home-printing-web';
+const BRANCH='main';
+const files=[
+ ['Logo Website','logo-yudhy.png','Logo utama yang dipakai website'],
+ ['Portofolio 1','portofolio-1.png','Foto/desain portofolio pertama'],
+ ['Portofolio 2','portofolio-2.png','Foto/desain portofolio kedua'],
+ ['Banner HUT RI','banner-hut-ri.jpg','Banner promosi/event'],
+ ['Foto Anak','foto-anak.jpg','Foto untuk contoh desain'],
+ ['Gantungan Foto','gantungan-foto.jpg','Contoh produk gantungan foto'],
+ ['ID Card','id-card.jpg','Contoh cetak ID Card'],
+ ['Label Buku','label-buku.jpg','Contoh label buku'],
+ ['Poster Motivasi','poster-motivasi.jpg','Contoh poster'],
+ ['Promo Kartu','promo-kartu.png','Contoh materi promosi']
+];
+const $=id=>document.getElementById(id);
+function imageUrl(path){return 'https://raw.githubusercontent.com/'+OWNER+'/'+REPO+'/'+BRANCH+'/'+path+'?v='+Date.now()}
+function render(){
+ $('cards').innerHTML=files.map((f,i)=>`<div class="card"><h3>${f[0]}</h3><div class="small">${f[2]}</div><code>${f[1]}</code><img class="preview" id="img${i}" src="${imageUrl(f[1])}" onerror="this.style.opacity='.25'" alt="${f[0]}"><input id="file${i}" type="file" accept="image/jpeg,image/png,image/webp" onchange="preview(${i})"><div class="actions" style="margin-top:10px"><button onclick="upload(${i})">⬆️ Upload & Ganti</button><span id="msg${i}" class="small"></span></div></div>`).join('');
+}
+function preview(i){const file=$("file"+i).files[0];if(!file)return;const r=new FileReader();r.onload=e=>$("img"+i).src=e.target.result;r.readAsDataURL(file)}
+function getToken(){return $('token').value.trim()}
+async function api(path,options={}){const token=getToken();if(!token)throw new Error('Masukkan GitHub Personal Access Token terlebih dahulu.');const res=await fetch('https://api.github.com'+path,{...options,headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28',...(options.headers||{})}});let data={};try{data=await res.json()}catch(e){}if(!res.ok)throw new Error(data.message||('GitHub API error '+res.status));return data}
+async function testToken(){try{const d=await api('/repos/'+OWNER+'/'+REPO);$('status').style.display='block';$('status').textContent='✅ Terhubung ke repository '+d.full_name+'.';}catch(e){$('status').style.display='block';$('status').textContent='❌ '+e.message}}
+function fileToBase64(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result.split(',')[1]);r.onerror=reject;r.readAsDataURL(file)})}
+async function upload(i){const file=$("file"+i).files[0];const msg=$("msg"+i);if(!file){msg.textContent='Pilih foto dulu.';return}if(file.size>8*1024*1024){msg.textContent='File terlalu besar. Maksimal 8 MB.';return}msg.textContent='Mengunggah...';try{const path=files[i][1];let sha=null;try{const old=await api('/repos/'+OWNER+'/'+REPO+'/contents/'+encodeURIComponent(path)+'?ref='+BRANCH);sha=old.sha}catch(e){if(!String(e.message).includes('Not Found'))throw e}const content=await fileToBase64(file);const body={message:'Update foto '+path,content,branch:BRANCH};if(sha)body.sha=sha;await api('/repos/'+OWNER+'/'+REPO+'/contents/'+encodeURIComponent(path),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});$("img"+i).src=URL.createObjectURL(file);msg.textContent='✅ Berhasil. Tunggu beberapa menit sampai GitHub Pages diperbarui.';}catch(e){msg.textContent='❌ '+e.message}}
+render();
+</script>
+</body>
+</html>
