@@ -1,13 +1,13 @@
 {
   "products": [
-    {"id":"dokumen","name":"Cetak Dokumen","price":"Mulai Rp1.000","description":"Hitam putih / warna.","image":"assets/id-card.jpg"},
-    {"id":"pasfoto","name":"Pas Foto & Polaroid","price":"Mulai Rp1.000","description":"Per pcs, sesuai jenis cetak.","image":"assets/foto-anak.jpg"},
-    {"id":"idcard","name":"ID Card","price":"Rp15.000","description":"Harga dapat menyesuaikan pesanan.","image":"assets/id-card.jpg"},
-    {"id":"desain","name":"Jasa Desain","price":"Mulai Rp10.000","description":"Konsultasikan kebutuhan desain.","image":"assets/portofolio-1.png"},
-    {"id":"jilid","name":"Jasa Jilid","price":"Mulai Rp5.000","description":"Menyesuaikan jenis jilid.","image":"assets/label-buku.jpg"},
-    {"id":"laminating","name":"Laminating","price":"Mulai Rp5.000","description":"Menyesuaikan ukuran.","image":"assets/poster-motivasi.jpg"},
-    {"id":"banner","name":"Banner / MMT","price":"Mulai Rp27.000/m²","description":"Ukuran dan bahan sesuai pesanan.","image":"assets/banner-hut-ri.jpg"},
-    {"id":"undangan","name":"Undangan","price":"Mulai Rp2.000","description":"Pernikahan, khitanan dan lainnya.","image":"assets/promo-kartu.png"},
-    {"id":"stiker","name":"Stiker","price":"Mulai Rp2.000","description":"Berbagai ukuran dan bahan.","image":"assets/label-buku.jpg"}
+    {"id":"dokumen","name":"Cetak Dokumen","price":"Mulai Rp1.000","description":"Hitam putih maupun warna untuk berbagai kebutuhan.","image":"poster-motivasi.jpg"},
+    {"id":"pasfoto","name":"Pas Foto & Polaroid","price":"Mulai Rp1.000","description":"Cetak pas foto dan polaroid dengan hasil rapi.","image":"foto-anak.jpg"},
+    {"id":"idcard","name":"ID Card","price":"Rp15.000","description":"Cetak ID Card dan kartu kebutuhan lainnya.","image":"id-card.jpg"},
+    {"id":"desain","name":"Jasa Desain","price":"Mulai Rp10.000","description":"Desain poster, undangan, promosi, kartu dan lainnya.","image":"portofolio-1.png"},
+    {"id":"jilid","name":"Jasa Jilid","price":"Mulai Rp5.000","description":"Jilid dokumen, tugas dan berbagai kebutuhan.","image":"label-buku.jpg"},
+    {"id":"laminating","name":"Laminating","price":"Mulai Rp5.000","description":"Finishing laminasi untuk membantu melindungi hasil cetak.","image":"poster-motivasi.jpg"},
+    {"id":"banner","name":"Banner / MMT","price":"Mulai Rp27.000/m²","description":"Cetak media promosi dengan ukuran sesuai kebutuhan.","image":"banner-hut-ri.jpg"},
+    {"id":"undangan","name":"Undangan","price":"Mulai Rp2.000","description":"Pernikahan, khitanan, ulang tahun, aqiqah dan lainnya.","image":"promo-kartu.png"},
+    {"id":"stiker","name":"Stiker","price":"Mulai Rp2.000","description":"Berbagai ukuran dan bahan sesuai kebutuhan.","image":"label-buku.jpg"}
   ]
 }
